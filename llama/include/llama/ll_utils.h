@@ -342,7 +342,20 @@ inline int64_t ll_rand64_positive_r(unsigned* seedp) {
 	return r;
 }
 
-
+/**
+ * Check whether the given level number is within the bounds
+ *
+ * @param level the level
+ * @param min the min level (inclusive)
+ * @param max the max level (inclusive)
+ * @return true if it is within the given bounds
+ */
+inline bool ll_level_within_bounds(int level, int min, int max) {
+  if (min <= max)
+    return min <= level && level <= max;
+  else
+    return (min <= level || level <= max) && max >= 0;
+}
 
 //==========================================================================//
 // Debugging and output                                                     //
@@ -518,28 +531,38 @@ inline bool _ll_clear_bit_atomic(unsigned char* BitMap, int n) {
     })
 
 static inline bool _ll_atomic_compare_and_swap(int *dest, int old_val,
-		int new_val) {
-    return __sync_bool_compare_and_swap(dest, old_val, new_val);
+                                               int new_val) {
+  return __sync_bool_compare_and_swap(dest, old_val, new_val);
 }
 
 static inline bool _ll_atomic_compare_and_swap(long *dest, long old_val,
-		long new_val) {
-    return __sync_bool_compare_and_swap(dest, old_val, new_val);
+                                               long new_val) {
+  return __sync_bool_compare_and_swap(dest, old_val, new_val);
+}
+
+static inline bool _ll_atomic_compare_and_swap(unsigned long *dest,
+                                               unsigned long old_val, unsigned long new_val) {
+  return __sync_bool_compare_and_swap(dest, old_val, new_val);
 }
 
 static inline bool _ll_atomic_compare_and_swap(long long* dest, long long old_val,
-		long long new_val) {
-    return __sync_bool_compare_and_swap(dest, old_val, new_val);
+                                               long long new_val) {
+  return __sync_bool_compare_and_swap(dest, old_val, new_val);
+}
+
+static inline bool _ll_atomic_compare_and_swap(unsigned long long *dest,
+                                               unsigned long long old_val, unsigned long long new_val) {
+  return __sync_bool_compare_and_swap(dest, old_val, new_val);
 }
 
 static inline bool _ll_atomic_compare_and_swap(float *dest, float old_val,
-		float new_val) {
-    return _ll_cas_asm(dest, old_val, new_val);
+                                               float new_val) {
+  return _ll_cas_asm(dest, old_val, new_val);
 }
 
 static inline bool _ll_atomic_compare_and_swap(double *dest, double old_val,
-		double new_val) {
-    return _ll_cas_asm(dest, old_val, new_val);
+                                               double new_val) {
+  return _ll_cas_asm(dest, old_val, new_val);
 }
 
 template<typename T>
