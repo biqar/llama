@@ -133,12 +133,22 @@ Tasks (run using the --run/-r option):
 ### Useful Run-Commands
 
 * build pagerank benchmark
+```
 > cd llama/benchmark/
 > make TASK=pagerank
+```
 * Pagerank with dataload:
+```
 > ./bench-pagerank-persistent /mnt/cci-files/snap/com-orkut.ungraph.net -L -d /pmem/llama/ -I -v
-* Pagerank on some loaded data:
-> ./bench-pagerank-persistent -d /pmem/llama/ -I -v -t 1
+```
+* Pagerank on already loaded data:
+```
+> taskset --cpu-list 0-70:2 ./bench-pagerank-persistent -d /pmem/llama/ -I -v -t 1
+```
+* BFS on already loaded data:
+```
+> taskset --cpu-list 0-70:2 ./bench-bfs_count-persistent -d /pmem/llama/ -I -v -R 1 -c 10 -t 64
+```
 
 ## 2. Using LLAMA
 
